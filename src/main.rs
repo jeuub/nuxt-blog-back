@@ -36,6 +36,7 @@ async fn main() -> std::io::Result<()> {
       .route("/hello/{name}", web::get().to(greet))
       .route("/", web::get().to(greet))
       .route("/articles", web::get().to(get_articles))
+      .route("/article/{id}", web::get().to(get_article))
       .route("/articles/{id}/comments", web::get().to(get_comments))
       .route("/articles/{id}/comments", web::post().to(new_comment))
   })
@@ -112,6 +113,25 @@ async fn get_comments(req: HttpRequest,data: web::Data<Mutex<Client>>) -> HttpRe
   .collection::<Bson>("сomments");
   
   let mut cursor = comments.find( doc!{"article_id": article_id}, None).await.unwrap();
+  
+  let mut results = Vec::new();
+  while let Some(result) = cursor.try_next().await.unwrap() {
+    results.push(result)
+  }
+
+  HttpResponse::Ok().json(results)
+}
+
+async fn get_article(req: HttpRequest,data: web::Data<Mutex<Client>>) -> HttpResponse {
+  let article_id = req.match_info().get("id").unwrap().parse::<i32>().unwrap();
+
+  let comments = data
+  .lock()
+  .unwrap()
+  .database("main")
+  .collection::<Bson>("articles");
+  
+  let mut cursor = comments.find( doc!{"id": article_id}, None).await.unwrap();
   
   let mut results = Vec::new();
   while let Some(result) = cursor.try_next().await.unwrap() {
