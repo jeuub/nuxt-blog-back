@@ -34,7 +34,7 @@ async fn main() -> std::io::Result<()> {
       .wrap(cors)
       .app_data(client.clone())
       .route("/hello/{name}", web::get().to(greet))
-      .route("/hello", web::get().to(greet))
+      .route("/", web::get().to(greet))
       .route("/articles", web::get().to(get_articles))
       .route("/articles/{id}/comments", web::get().to(get_comments))
       .route("/articles/{id}/comments", web::post().to(new_comment))
