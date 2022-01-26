@@ -39,7 +39,7 @@ async fn main() -> std::io::Result<()> {
       .route("/articles/{id}/comments", web::get().to(get_comments))
       .route("/articles/{id}/comments", web::post().to(new_comment))
   })
-  .bind("127.0.0.1:".to_owned() + &port)?
+  .bind("0.0.0.0:".to_owned() + &port)?
   .run()
   .await
 }
