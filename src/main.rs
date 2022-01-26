@@ -36,7 +36,7 @@ async fn main() -> std::io::Result<()> {
       .route("/hello/{name}", web::get().to(greet))
       .route("/", web::get().to(greet))
       .route("/articles", web::get().to(get_articles))
-      .route("/article/{id}", web::get().to(get_article))
+      .route("/articles/{id}", web::get().to(get_article))
       .route("/articles/{id}/comments", web::get().to(get_comments))
       .route("/articles/{id}/comments", web::post().to(new_comment))
   })
