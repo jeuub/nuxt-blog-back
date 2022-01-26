@@ -138,7 +138,7 @@ async fn get_article(req: HttpRequest,data: web::Data<Mutex<Client>>) -> HttpRes
     results.push(result)
   }
 
-  HttpResponse::Ok().json(results)
+  HttpResponse::Ok().json(results.first())
 }
 
 #[derive(Serialize, Deserialize)]
